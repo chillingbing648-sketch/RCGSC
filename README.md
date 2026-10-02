@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # RCGSC — Rotaract Club of Ghanshyamdas Saraf College
 
 > **Practice / Development Website**
@@ -143,3 +144,43 @@ This project is currently intended for **RCGSC practice, review, development, an
 **Rotaract Club of Ghanshyamdas Saraf College**
 
 Practice website • Development preview • Intended for future official handover
+=======
+# RCGSC
+
+Website for the Rotaract Club of Ghanshyamdas Saraf College (RCGSC), part of Rotaract District 3141 in Malad West, Mumbai. The site presents the club, its service avenues, milestones, and gallery.
+
+## Tech Stack
+
+- React 18
+- Vite
+- Framer Motion, GSAP, and Lenis for animation and scrolling
+
+## Getting Started
+
+Requires Node.js and npm.
+
+```bash
+npm install
+npm run dev
+```
+
+Vite prints the local development URL in the terminal.
+
+## Available Commands
+
+```bash
+npm run dev      # Start the development server
+npm run build    # Create a production build in dist/
+npm run preview  # Preview the production build locally
+```
+
+## Project Structure
+
+- `src/components/` - Site sections and shared UI components
+- `src/content.js` - Club copy and gallery content
+- `src/lib/` - Shared utilities
+- `src/styles/` - Global and section styles
+- `public/images/` - Static image assets
+
+Update club details and page copy in `src/content.js`; add or replace static images in `public/images/`.
+>>>>>>> 8e907b5 (Added Better Group Images)

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap, env, scrollTo } from '../lib/scroll'
-import { content, asset } from '../content'
+import { content } from '../content'
 
 export default function Hero() {
   const root = useRef()
@@ -25,7 +25,7 @@ export default function Hero() {
 
   return (
     <section className="hero" id="hero" ref={root}>
-      <div className="hero__photo"><img src={asset("/images/group-photo.webp")} alt="" fetchpriority="high" /></div>
+      <div className="hero__photo"><img src="/images/group-photo.jpeg" alt="" fetchpriority="high" /></div>
       <div className="hero__glow" aria-hidden="true" />
       <div className="hero__content">
         <p className="meta hero__fade">{content.district} · {content.year}</p>

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import Lines from './Lines'
 import { useReveal, env } from '../lib/scroll'
-import { content, asset } from '../content'
+import { content } from '../content'
 
 export default function Avenues() {
   const r = useRef(); useReveal(r)
@@ -28,7 +28,7 @@ export default function Avenues() {
               <div className="row__inner">
                 <p>{a.text}</p>
                 <div className="row__visual" aria-hidden="true">
-                  <img src={a.img || asset("/images/group-photo.webp")} alt="" loading="lazy" style={{ objectPosition: a.pos }} />
+                  <img src={a.img || "/images/group-photo.jpeg"} alt="" loading="lazy" style={{ objectPosition: a.pos }} />
                 </div>
               </div>
             </div>
