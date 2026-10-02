@@ -6,10 +6,20 @@
 >
 > The website will soon be transferred to the **original RCGSC members and the authorized website holders/administrators** for their continued use, review, ownership, and future updates.
 
-[![Deploy](https://github.com/chillingbing648-sketch/RCGSC/actions/workflows/deploy.yml/badge.svg)](https://github.com/chillingbing648-sketch/RCGSC/actions/workflows/deploy.yml)
 [![GitHub Pages](https://img.shields.io/badge/Hosted%20on-GitHub%20Pages-222?logo=github)](https://pages.github.com/)
-[![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=111)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Framer Motion](https://img.shields.io/badge/Framer%20Motion-13-0055FF?logo=framer&logoColor=white)](https://motion.dev/)
+[![GSAP](https://img.shields.io/badge/GSAP-3-88CE02?logo=greensock&logoColor=111)](https://gsap.com/)
+[![Lenis](https://img.shields.io/badge/Lenis-1.3-111111?logoColor=white)](https://lenis.darkroom.engineering/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ESM-F7DF1E?logo=javascript&logoColor=111)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![CSS3](https://img.shields.io/badge/CSS3-Responsive-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](https://github.com/features/actions)
+
+<p align="center">
+  <img src="./public/rcgsc-preview.svg" alt="RCGSC practice website preview" width="100%">
+</p>
 
 ## Live Practice Preview
 
@@ -32,21 +42,24 @@ The current implementation focuses on building a polished digital presence with 
 | React application | Active |
 | Responsive UI | Active |
 | GitHub repository | Active |
-| GitHub Actions deployment | Automated |
 | GitHub Pages preview | Active after Pages setup |
 | Official ownership | Pending transfer |
 | Final official content | To be reviewed by RCGSC |
 
-## Technology
+## Technology Stack
 
-- **React 18** — UI architecture
-- **Vite 5** — development and production build tooling
-- **Framer Motion** — interface motion
-- **GSAP** — advanced animation
-- **Lenis** — smooth scrolling
-- **CSS / Responsive Design** — presentation and layout
-- **GitHub Actions** — automated deployment
-- **GitHub Pages** — practice hosting
+| Technology | Purpose |
+| --- | --- |
+| React 18 | UI architecture |
+| Vite 5 | Development and production builds |
+| Framer Motion | Interface motion |
+| GSAP | Advanced animation |
+| Lenis | Smooth scrolling |
+| JavaScript / ESM | Application logic |
+| CSS3 | Styling and responsive design |
+| Node.js | Development environment |
+| GitHub Actions | Automated deployment |
+| GitHub Pages | Practice hosting |
 
 ## Project Structure
 
@@ -56,6 +69,7 @@ RCGSC/
 │   └── workflows/
 │       └── deploy.yml
 ├── public/
+│   └── rcgsc-preview.svg
 ├── src/
 │   ├── components/
 │   ├── lib/
@@ -77,27 +91,15 @@ Requirements:
 - Node.js 20+
 - npm
 
-Install dependencies:
-
 ```bash
 npm ci
-```
-
-Start the development server:
-
-```bash
 npm run dev
 ```
 
-Create a production build:
+Production build:
 
 ```bash
 npm run build
-```
-
-Preview the production build locally:
-
-```bash
 npm run preview
 ```
 
@@ -105,14 +107,7 @@ npm run preview
 
 The repository uses **GitHub Actions + GitHub Pages**.
 
-Every push to `main`:
-
-1. Installs dependencies with `npm ci`
-2. Builds the Vite application
-3. Packages the generated `dist` directory
-4. Publishes the artifact to GitHub Pages
-
-The workflow can also be started manually from the **Actions** tab.
+Every push to `main` builds the Vite application and publishes the generated `dist` directory to GitHub Pages. The workflow can also be started manually from the **Actions** tab.
 
 ## Ownership & Transfer Notice
 
@@ -133,13 +128,13 @@ Official club representatives should review and approve:
 
 ## Development Notes
 
-This project is being developed as a practical web-development implementation and learning project. The current design and implementation may continue to change before the official handover.
+This project is being developed as a practical web-development implementation and learning project. The design and implementation may continue to change before the official handover.
 
-Please avoid treating temporary content, placeholder information, or development decisions as final club policy or official communication.
+Temporary content, placeholder information, and development decisions should not be treated as final club policy or official communication.
 
 ## License
 
-This project is currently intended for **RCGSC practice, review, development, and eventual handover**. Final licensing, ownership, and usage terms should be determined by the authorized RCGSC website holders during the transfer.
+This project is currently intended for **RCGSC practice, review, development, and eventual handover**. Final licensing, ownership, and usage terms should be determined by the authorized RCGSC website holders.
 
 ---
 
