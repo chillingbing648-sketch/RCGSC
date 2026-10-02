@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap, env, useReveal, scrollTo } from '../lib/scroll'
-import { content } from '../content'
+import { content, asset } from '../content'
 
 export default function Join() {
   const r = useRef(); useReveal(r)
@@ -14,7 +14,7 @@ export default function Join() {
   const href = content.contact.join || '#contact'
   return (
     <section className="join" id="join" ref={r}>
-      <img className="join__crest" src="/images/reign-crest.webp" alt="" loading="lazy" />
+      <img className="join__crest" src={asset("/images/reign-crest.webp")} alt="" loading="lazy" />
       <div className="join__inner">
         <p className="meta" data-fade>Join us</p>
         <h2 className="join__title display-xxl" data-lines aria-label="Service above self">
