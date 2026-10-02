@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap, env, scrollTo } from '../lib/scroll'
-import { content } from '../content'
+import { content, asset } from '../content'
 
 export default function Hero() {
   const root = useRef()
@@ -12,7 +12,7 @@ export default function Hero() {
         .from('.hero__fade', { y: 26, opacity: 0, duration: 1.1, stagger: 0.12 }, 0.8)
         .fromTo('.hero__photo', { clipPath: 'inset(16% 14% 16% 14% round 48px)', scale: 1.2 },
           { clipPath: 'inset(0% 0% 0% 0% round 0px)', scale: 1, duration: 2.2, ease: 'power3.out' }, 0)
-        .to('.hero__photo img', { scale: 1.08, duration: 18, ease: 'none' }, 0) // slow push-in
+        .to('.hero__photo img', { scale: 1.08, duration: 18, ease: 'none' }, 0)
       if (!env.small) {
         const st = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true }
         gsap.to('.hero__photo img', { yPercent: 14, ease: 'none', scrollTrigger: st })
@@ -25,7 +25,7 @@ export default function Hero() {
 
   return (
     <section className="hero" id="hero" ref={root}>
-      <div className="hero__photo"><img src="/images/group-photo.jpeg" alt="" fetchpriority="high" /></div>
+      <div className="hero__photo"><img src={asset('/images/group-photo.jpeg')} alt="" fetchpriority="high" /></div>
       <div className="hero__glow" aria-hidden="true" />
       <div className="hero__content">
         <p className="meta hero__fade">{content.district} · {content.year}</p>
