@@ -1,0 +1,82 @@
+:root {
+  /* palette drawn from the REIGN 26–27 crest */
+  --space-0: #03020a;
+  --space-1: #07051a;
+  --violet: #7c4dff;
+  --indigo: #2a3cff;
+  --magenta: #d946a8;
+  --ember: #ff8a5b;
+  --gold: #e3b341;
+  --ink: #f2eefc;
+  --ink-dim: rgba(242, 238, 252, .62);
+  --ink-faint: rgba(242, 238, 252, .32);
+
+  --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Instrument Sans', system-ui, sans-serif;
+
+  --t-meta: clamp(.72rem, .68rem + .2vw, .85rem);
+  --t-body: clamp(1rem, .95rem + .25vw, 1.2rem);
+  --t-xl: clamp(2.6rem, 1.2rem + 6vw, 7rem);
+  --t-xxl: clamp(4.5rem, 1rem + 19vw, 22rem);
+
+  --pad: clamp(1.25rem, 4vw, 4rem);
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+html { background: var(--space-0); color-scheme: dark; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body); font-size: var(--t-body); line-height: 1.55;
+  color: var(--ink); background: transparent; overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+::selection { background: var(--violet); color: #fff; }
+
+.display-xxl, .display-xl {
+  font-family: var(--font-display); font-weight: 700; line-height: .86; letter-spacing: -.045em;
+}
+.display-xxl { font-size: var(--t-xxl); }
+.display-xl { font-size: var(--t-xl); }
+.meta { font-size: var(--t-meta); letter-spacing: .04em; color: var(--ink-dim); }
+.lede { max-width: 34ch; color: var(--ink-dim); }
+
+/* ---------- Galaxy environment ---------- */
+.galaxy { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 0%, var(--space-1) 0%, var(--space-0) 70%); }
+
+.nebula { position: absolute; border-radius: 50%; will-change: transform; }
+.nebula--a { width: 90vmax; height: 90vmax; left: -35vmax; top: -30vmax;
+  background: radial-gradient(closest-side, rgba(124,77,255,.34), rgba(124,77,255,.12) 55%, transparent 100%);
+  animation: drift-a 48s ease-in-out infinite alternate; }
+.nebula--b { width: 80vmax; height: 80vmax; right: -30vmax; top: 10vh;
+  background: radial-gradient(closest-side, rgba(42,60,255,.30), rgba(42,60,255,.10) 55%, transparent 100%);
+  animation: drift-b 62s ease-in-out infinite alternate; }
+.nebula--c { width: 60vmax; height: 60vmax; left: 10vw; bottom: -35vmax;
+  background: radial-gradient(closest-side, rgba(217,70,168,.20), rgba(217,70,168,.07) 55%, transparent 100%);
+  animation: drift-c 70s ease-in-out infinite alternate; }
+
+@keyframes drift-a { to { transform: translate3d(10vw, 8vh, 0) scale(1.12); } }
+@keyframes drift-b { to { transform: translate3d(-12vw, -6vh, 0) scale(1.08); } }
+@keyframes drift-c { to { transform: translate3d(8vw, -10vh, 0) scale(1.15); } }
+
+.galaxy canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.galaxy__vignette { position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(3,2,10,.65) 100%); }
+.galaxy__grain { position: absolute; inset: -50%; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1.2s steps(6) infinite; }
+@keyframes grain {
+  0% { transform: translate(0,0); } 20% { transform: translate(-3%,2%); } 40% { transform: translate(2%,-3%); }
+  60% { transform: translate(-2%,-1%); } 80% { transform: translate(3%,3%); } 100% { transform: translate(0,0); }
+}
+
+@media (max-width: 768px) {
+  .nebula--c, .galaxy__grain { display: none; }
+  .nebula { animation-duration: 90s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nebula, .galaxy__grain { animation: none; }
+}
