@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import Lines from './Lines'
 import { gsap, env, useReveal } from '../lib/scroll'
-import { content as c } from '../content'
+import { content as c, asset } from '../content'
 
 export default function CurrentYear() {
   const r = useRef(); useReveal(r)
@@ -20,10 +20,10 @@ export default function CurrentYear() {
       <p className="meta" data-fade>{c.district}</p>
       <div className="year__numwrap"><h2 className="display-xxl year__num">{c.year}</h2></div>
       <Lines className="display-xl year__head" lines={['New term.', 'New theme.']} />
-      <figure className="year__photo"><img src="/images/group-photo.jpeg" alt="Members of the Rotaract Club of Ghanshyamdas Saraf College" loading="lazy" /></figure>
+      <figure className="year__photo"><img src={asset('/images/group-photo.jpeg')} alt="Members of the Rotaract Club of Ghanshyamdas Saraf College" loading="lazy" /></figure>
       <div className="year__cols">
         <div data-fade className="year__crest">
-          <img src="/images/reign-crest.webp" alt="REIGN — Unleash the Grace, RCGSC 26-27 crest" loading="lazy" />
+          <img src={asset('/images/reign-crest.webp')} alt="REIGN — Unleash the Grace, RCGSC 26-27 crest" loading="lazy" />
         </div>
         <div data-fade>
           <p className="meta">Club theme</p>
