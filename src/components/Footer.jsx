@@ -1,8 +1,9 @@
 import { useLayoutEffect, useRef } from 'react'
-import { gsap, env, scrollTo } from '../lib/scroll'
+import { gsap, env } from '../lib/scroll'
 import { content as c } from '../content'
+import { Link } from '../lib/router'
+import { routes } from '../routes'
 
-const LINKS = ['about', 'events', 'journey', 'gallery', 'contact']
 export default function Footer() {
   const r = useRef()
   useLayoutEffect(() => {
@@ -24,7 +25,7 @@ export default function Footer() {
           <p className="meta">{c.location}</p>
         </div>
         <nav aria-label="Footer"><ul>
-          {LINKS.map((l) => <li key={l}><a href={'#' + l} onClick={(e) => { e.preventDefault(); scrollTo('#' + l) }}>{l}</a></li>)}
+          {routes.map((page) => <li key={page.path}><Link to={page.path}>{page.label}</Link></li>)}
         </ul></nav>
         {ext.length > 0 && (
           <ul className="foot__contact">

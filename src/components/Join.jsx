@@ -17,9 +17,9 @@ export default function Join() {
       <img className="join__crest" src={asset("/images/reign-crest.webp")} alt="" loading="lazy" />
       <div className="join__inner">
         <p className="meta" data-fade>Join us</p>
-        <h2 className="join__title display-xxl" data-lines aria-label="Service above self">
+        <h1 className="join__title display-xxl" data-lines aria-label="Service above self">
           {['SERVICE', 'ABOVE', 'SELF'].map((w) => <span className="line" key={w} aria-hidden="true"><span>{w}</span></span>)}
-        </h2>
+        </h1>
         <p className="join__tag" data-fade>Lead. Serve. Create impact.</p>
         <a className="btn btn--lg" data-fade href={href} onClick={(e) => { if (href.startsWith('#')) { e.preventDefault(); scrollTo(href) } }}>Become a Rotaractor</a>
       </div>

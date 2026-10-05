@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { gsap, ScrollTrigger, env } from '../lib/scroll'
-import { content } from '../content'
+import { content, asset } from '../content'
 
 const items = content.journey
 const n = items.length
@@ -28,7 +28,7 @@ export default function Journey() {
   if (env.reduce) {
     return (
       <section className="section journey journey--static" id="journey">
-        <h2 className="display-xl">Journey</h2>
+        <h1 className="display-xl">Journey</h1>
         {items.map((it) => (
           <article key={it.year}><p className="journey__year">{it.year}</p><h3>{it.title}</h3><p>{it.text}</p></article>
         ))}
@@ -41,7 +41,7 @@ export default function Journey() {
       {items.map((x, k) => (
         <div key={k} className="journey__atmos" style={{ opacity: k === i ? 1 : 0, background: `radial-gradient(70% 70% at 75% 40%, ${x.hue}55, transparent 70%)` }} />
       ))}
-      <p className="meta journey__label">Journey</p>
+      <h1 className="meta journey__label">Journey</h1>
       <div className="journey__text">
         <AnimatePresence mode="wait">
           <motion.div key={i} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -30, opacity: 0 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
@@ -53,7 +53,7 @@ export default function Journey() {
       </div>
       <div className="journey__img">
         <AnimatePresence mode="popLayout">
-          <motion.img key={i} src={it.img} alt="" style={{ objectPosition: it.pos }} loading="lazy"
+          <motion.img key={i} src={asset(it.img)} alt="" style={{ objectPosition: it.pos }} loading="lazy"
             initial={{ opacity: 0, scale: 1.12, clipPath: 'inset(0 0 0 100%)' }} animate={{ opacity: 1, scale: 1, clipPath: 'inset(0 0 0 0%)' }}
             exit={{ opacity: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} />
         </AnimatePresence>

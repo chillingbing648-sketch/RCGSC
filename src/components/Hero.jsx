@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap, env, scrollTo } from '../lib/scroll'
 import { content, asset } from '../content'
+import { Link } from '../lib/router'
 
 export default function Hero() {
   const root = useRef()
@@ -38,8 +39,8 @@ export default function Hero() {
           <p className="hero__club hero__fade">Rotaract Club of<br />Ghanshyamdas Saraf College</p>
           <p className="lede hero__fade">Service across community, club, profession and the world — led by students in {content.location}.</p>
           <div className="hero__cta hero__fade">
-            <a className="btn" href="#join" onClick={(e) => { e.preventDefault(); scrollTo('#join') }}>Join us</a>
-            <a className="btn btn--ghost" href="#journey" onClick={(e) => { e.preventDefault(); scrollTo('#journey') }}>The journey</a>
+            <Link className="btn" to="/join">Join us</Link>
+            <Link className="btn btn--ghost" to="/journey">The journey</Link>
           </div>
         </div>
       </div>

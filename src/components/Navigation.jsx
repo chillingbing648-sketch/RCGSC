@@ -1,70 +1,75 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { scrollTo, lockScroll } from '../lib/scroll'
+import { lockScroll } from '../lib/scroll'
+import { Link, useRouter } from '../lib/router'
+import { routes } from '../routes'
 
-const LINKS = [
-  { id: 'about', label: 'About' }, { id: 'year', label: '2026–27' }, { id: 'avenues', label: 'Avenues' },
-  { id: 'journey', label: 'Journey' }, { id: 'gallery', label: 'Gallery' },
-]
+const PRIMARY_LINKS = routes.filter((page) => !['/', '/join'].includes(page.path))
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
-  const [active, setActive] = useState('')
   const [open, setOpen] = useState(false)
+  const triggerRef = useRef(null)
+  const menuRef = useRef(null)
+  const { route } = useRouter()
+  const homeActive = route === '/'
 
   useEffect(() => {
-    const onS = () => setScrolled(window.scrollY > 60)
-    onS(); window.addEventListener('scroll', onS, { passive: true })
-    const io = new IntersectionObserver(
-      (es) => es.forEach((e) => e.isIntersecting && setActive(e.target.id)),
-      { rootMargin: '-45% 0px -50% 0px' })
-    ;[...LINKS.map((l) => l.id), 'join', 'hero'].forEach((id) => { const el = document.getElementById(id); el && io.observe(el) })
-    return () => { window.removeEventListener('scroll', onS); io.disconnect() }
+    const onScroll = () => setScrolled(window.scrollY > 60)
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   useEffect(() => { lockScroll(open) }, [open])
   useEffect(() => {
-    const k = (e) => e.key === 'Escape' && setOpen(false)
-    window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k)
-  }, [])
+    if (!open) return
+    menuRef.current?.querySelector('a')?.focus()
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') { setOpen(false); return }
+      if (event.key !== 'Tab') return
+      const links = [...menuRef.current.querySelectorAll('a')]
+      if (event.shiftKey && document.activeElement === links[0]) { event.preventDefault(); links.at(-1)?.focus() }
+      else if (!event.shiftKey && document.activeElement === links.at(-1)) { event.preventDefault(); links[0]?.focus() }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => { window.removeEventListener('keydown', onKeyDown); triggerRef.current?.focus() }
+  }, [open])
 
-  const go = (id) => { setOpen(false); setTimeout(() => scrollTo('#' + id), open ? 400 : 0) }
-
+  const closeMenu = () => setOpen(false)
   return (
     <>
       <header className={'nav' + (scrolled ? ' nav--solid' : '')}>
-        <a className="nav__brand" href="#hero" onClick={(e) => { e.preventDefault(); go('hero') }}>RCGSC</a>
+        <Link className={'nav__brand' + (homeActive ? ' is-active' : '')} to="/" aria-label="RCGSC home">RCGSC</Link>
         <nav className="nav__links" aria-label="Primary">
-          {LINKS.map((l) => (
-            <a key={l.id} href={'#' + l.id} onClick={(e) => { e.preventDefault(); go(l.id) }}
-               className={active === l.id ? 'is-active' : ''}>
-              {l.label}
-              {active === l.id && <motion.span layoutId="nav-dot" className="nav__dot" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
-            </a>
+          {PRIMARY_LINKS.map((page) => (
+            <Link key={page.path} to={page.path} className={route === page.path ? 'is-active' : ''} aria-current={route === page.path ? 'page' : undefined}>
+              {page.label}
+              {route === page.path && <motion.span layoutId="nav-dot" className="nav__dot" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+            </Link>
           ))}
         </nav>
-        <a className="btn btn--sm nav__cta" href="#join" onClick={(e) => { e.preventDefault(); go('join') }}>Join us</a>
-        <button className={'burger' + (open ? ' is-open' : '')} aria-expanded={open} aria-label="Menu" onClick={() => setOpen(!open)}>
+        <Link className={'btn btn--sm nav__cta' + (route === '/join' ? ' is-active' : '')} to="/join" aria-current={route === '/join' ? 'page' : undefined}>Join us</Link>
+        <button ref={triggerRef} className={'burger' + (open ? ' is-open' : '')} aria-expanded={open} aria-controls="site-menu" aria-label={open ? 'Close menu' : 'Open menu'} onClick={() => setOpen(!open)}>
           <span /><span />
         </button>
       </header>
       <AnimatePresence>
         {open && (
-          <motion.div className="menu" role="dialog" aria-label="Menu"
+          <motion.nav ref={menuRef} id="site-menu" className="menu" role="dialog" aria-modal="true" aria-label="Site menu"
             initial={{ clipPath: 'circle(0% at calc(100% - 2.2rem) 2.2rem)' }}
             animate={{ clipPath: 'circle(150% at calc(100% - 2.2rem) 2.2rem)' }}
             exit={{ clipPath: 'circle(0% at calc(100% - 2.2rem) 2.2rem)' }}
             transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}>
             <ul>
-              {[...LINKS, { id: 'join', label: 'Join us' }].map((l, i) => (
-                <motion.li key={l.id} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+              {routes.map((page, i) => (
+                <motion.li key={page.path} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 + i * 0.06, duration: 0.5 }}>
-                  <a href={'#' + l.id} onClick={(e) => { e.preventDefault(); go(l.id) }}>{l.label}</a>
+                  <Link to={page.path} onClick={closeMenu} aria-current={route === page.path ? 'page' : undefined}>{page.label}</Link>
                 </motion.li>
               ))}
             </ul>
-            <p className="meta">{'Malad West, Mumbai'}</p>
-          </motion.div>
+            <p className="meta">Malad West, Mumbai</p>
+          </motion.nav>
         )}
       </AnimatePresence>
     </>

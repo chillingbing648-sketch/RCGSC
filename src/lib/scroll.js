@@ -24,6 +24,10 @@ export const scrollTo = (sel) => {
   if (lenis) lenis.scrollTo(el, { duration: 1.5, easing: (t) => 1 - Math.pow(1 - t, 4) })
   else el.scrollIntoView({ behavior: env.reduce ? 'auto' : 'smooth' })
 }
+export const scrollToTop = () => {
+  if (lenis) lenis.scrollTo(0, { immediate: true })
+  else window.scrollTo({ top: 0, behavior: 'auto' })
+}
 export const lockScroll = (on) => {
   if (lenis) on ? lenis.stop() : lenis.start()
   else document.body.style.overflow = on ? 'hidden' : ''

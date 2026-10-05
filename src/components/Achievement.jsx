@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap, env, useReveal } from '../lib/scroll'
-import { content } from '../content'
+import { content, asset } from '../content'
 
 export default function Achievement() {
   const r = useRef(); useReveal(r)
@@ -15,15 +15,28 @@ export default function Achievement() {
     return () => ctx.revert()
   }, [])
   return (
-    <section className="section daan" id="daanveer" ref={r}>
+    <section className="section daan" id="achievements" ref={r} aria-label="Achievements and service highlights">
       <p className="daan__word display-xxl" aria-hidden="true">{d.title}</p>
       <div className="daan__grid">
         <div className="daan__body">
-          <p className="meta" data-fade>Achievement</p>
+          <h1 className="meta" data-fade>Achievements · 2026–27</h1>
           <blockquote className="daan__quote" data-fade><span aria-hidden="true">“</span>{d.statement}</blockquote>
           <p className="meta" data-fade>{d.note}</p>
         </div>
-        <figure className="daan__img"><img src={d.img} alt="Daanveer Citation presented to the Rotaract Club of Ghanshyamdas Saraf College" loading="lazy" /></figure>
+        <figure className="daan__img"><img src={asset(d.img)} alt="Daanveer Citation presented to the Rotaract Club of Ghanshyamdas Saraf College" loading="lazy" /></figure>
+      </div>
+      <div className="achievement-list" aria-label="Achievements and service highlights">
+        {content.achievements.map((item, i) => (
+          <article className="achievement-card" key={item.title} data-fade>
+            <span className="achievement-card__number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <p className="meta">{item.kind}</p>
+              <h2>{item.title}</h2>
+              <p>{item.detail}</p>
+            </div>
+            <span className="achievement-card__year">2026–27</span>
+          </article>
+        ))}
       </div>
     </section>
   )

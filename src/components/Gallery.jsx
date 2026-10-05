@@ -2,29 +2,34 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Lines from './Lines'
 import { gsap, env, useReveal, lockScroll } from '../lib/scroll'
-import { gallery } from '../content'
+import { gallery, galleryCategories, asset } from '../content'
 
-function Lightbox({ i, setI }) {
+function Lightbox({ i, setI, photos, openerRef }) {
   const closeRef = useRef()
-  const n = gallery.length
+  const n = photos.length
   useEffect(() => {
     lockScroll(true); closeRef.current?.focus()
     const k = (e) => {
       if (e.key === 'Escape') setI(null)
       if (e.key === 'ArrowRight') setI((v) => (v + 1) % n)
       if (e.key === 'ArrowLeft') setI((v) => (v - 1 + n) % n)
+      if (e.key === 'Tab') {
+        const controls = [...document.querySelectorAll('.lb button:not([disabled])')]
+        if (e.shiftKey && document.activeElement === controls[0]) { e.preventDefault(); controls.at(-1)?.focus() }
+        else if (!e.shiftKey && document.activeElement === controls.at(-1)) { e.preventDefault(); controls[0]?.focus() }
+      }
     }
     window.addEventListener('keydown', k)
-    return () => { window.removeEventListener('keydown', k); lockScroll(false) }
+    return () => { window.removeEventListener('keydown', k); lockScroll(false); openerRef.current?.focus() }
   }, [])
-  const g = gallery[i]
+  const g = photos[i]
   return (
     <motion.div className="lb" role="dialog" aria-modal="true" aria-label="Photo viewer"
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} onClick={() => setI(null)}>
       <div className="lb__top meta"><span>{String(i + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}</span><span>{g.caption}</span>
-        <button ref={closeRef} onClick={() => setI(null)}>Close</button></div>
+        <button ref={closeRef} onClick={() => setI(null)} aria-label="Close photo viewer">Close</button></div>
       <AnimatePresence mode="wait">
-        <motion.img key={i} src={g.src} alt={g.caption} onClick={(e) => e.stopPropagation()}
+        <motion.img key={i} src={asset(g.src)} alt={g.caption} onClick={(e) => e.stopPropagation()}
           initial={{ opacity: 0, scale: 0.94, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 1.03 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }} />
       </AnimatePresence>
@@ -37,8 +42,11 @@ function Lightbox({ i, setI }) {
 }
 
 export default function Gallery() {
-  const r = useRef(); const cur = useRef(); useReveal(r)
+  const r = useRef(); const cur = useRef(); const openerRef = useRef(); useReveal(r)
   const [open, setOpen] = useState(null)
+  const [category, setCategory] = useState('all')
+  const categories = galleryCategories.filter((item) => gallery.some((photo) => photo.category === item.id))
+  const photos = category === 'all' ? gallery : gallery.filter((item) => item.category === category)
 
   useEffect(() => {
     if (!env.fine || env.reduce) return
@@ -61,18 +69,24 @@ export default function Gallery() {
   return (
     <section className="section gallery" id="gallery" ref={r}>
       <p className="meta" data-fade>Gallery</p>
-      <Lines className="display-xl" lines={['Moments', 'we made.']} />
+      <Lines as="h1" className="display-xl" lines={['Moments', 'we made.']} />
+      <div className="gallery__filters" role="group" aria-label="Filter gallery photos">
+        {[{ id: 'all', label: 'All' }, ...categories].map((item) => (
+          <button key={item.id} type="button" className={category === item.id ? 'is-active' : ''}
+            aria-pressed={category === item.id} onClick={() => setCategory(item.id)}>{item.label}</button>
+        ))}
+      </div>
       <div className="gal" onPointerEnter={cursor(true)} onPointerLeave={cursor(false)}>
-        {gallery.map((g, i) => (
-          <button key={i} className={'tile tile--' + g.size} onClick={() => setOpen(i)} onPointerMove={tileMove} onPointerLeave={tileLeave}
-            aria-label={`Open photo ${i + 1}`} data-fade>
-            <img src={g.src} alt="" loading="lazy" decoding="async" style={{ objectPosition: g.pos, '--z': g.zoom }} />
-            <span className="tile__meta"><b>{String(i + 1).padStart(2, '0')}</b><span>{g.caption}</span></span>
+        {photos.map((g, i) => (
+          <button key={g.src} className={'tile tile--' + g.size} onClick={(e) => { openerRef.current = e.currentTarget; setOpen(i) }} onPointerMove={tileMove} onPointerLeave={tileLeave}
+            aria-label={`View ${g.caption}`} data-fade>
+            <img src={asset(g.src)} alt="" loading="lazy" decoding="async" style={{ objectPosition: g.pos }} />
+            <span className="tile__meta"><b>{galleryCategories.find((item) => item.id === g.category)?.label}</b><span>{g.caption}</span></span>
           </button>
         ))}
       </div>
       <div className="cursor" ref={cur} aria-hidden="true"><span>View</span></div>
-      <AnimatePresence>{open !== null && <Lightbox i={open} setI={setOpen} />}</AnimatePresence>
+      <AnimatePresence>{open !== null && <Lightbox i={open} setI={setOpen} photos={photos} openerRef={openerRef} />}</AnimatePresence>
     </section>
   )
 }
