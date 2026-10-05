@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { lockScroll } from '../lib/scroll'
+import { asset } from '../content'
 import { Link, useRouter } from '../lib/router'
 import { routes } from '../routes'
 
@@ -39,7 +40,10 @@ export default function Navigation() {
   return (
     <>
       <header className={'nav' + (scrolled ? ' nav--solid' : '')}>
-        <Link className={'nav__brand' + (homeActive ? ' is-active' : '')} to="/" aria-label="RCGSC home">RCGSC</Link>
+        <Link className={'nav__brand' + (homeActive ? ' is-active' : '')} to="/" aria-label="RCGSC home">
+          <img className="nav__logo" src={asset('/images/rcgsc-logo.webp')} alt="" />
+          <span>RCGSC</span>
+        </Link>
         <nav className="nav__links" aria-label="Primary">
           {PRIMARY_LINKS.map((page) => (
             <Link key={page.path} to={page.path} className={route === page.path ? 'is-active' : ''} aria-current={route === page.path ? 'page' : undefined}>
