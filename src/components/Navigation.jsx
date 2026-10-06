@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { lockScroll } from '../lib/scroll'
+import { env, lockScroll } from '../lib/scroll'
 import { asset } from '../content'
 import { Link, useRouter } from '../lib/router'
 import { routes } from '../routes'
@@ -16,7 +16,7 @@ export default function Navigation() {
   const homeActive = route === '/'
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
+    const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll(); window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -48,11 +48,11 @@ export default function Navigation() {
           {PRIMARY_LINKS.map((page) => (
             <Link key={page.path} to={page.path} className={route === page.path ? 'is-active' : ''} aria-current={route === page.path ? 'page' : undefined}>
               {page.label}
-              {route === page.path && <motion.span layoutId="nav-dot" className="nav__dot" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+              {route === page.path && <motion.span aria-hidden="true" layoutId="nav-dot" className="nav__dot" transition={env.reduce ? { duration: 0 } : { type: 'spring', stiffness: 380, damping: 32 }} />}
             </Link>
           ))}
         </nav>
-        <Link className={'btn btn--sm nav__cta' + (route === '/join' ? ' is-active' : '')} to="/join" aria-current={route === '/join' ? 'page' : undefined}>Join us</Link>
+        <Link className={'btn btn--sm nav__cta' + (route === '/join' ? ' is-active' : '')} to="/join" aria-current={route === '/join' ? 'page' : undefined}><span>Join us</span></Link>
         <button ref={triggerRef} className={'burger' + (open ? ' is-open' : '')} aria-expanded={open} aria-controls="site-menu" aria-label={open ? 'Close menu' : 'Open menu'} onClick={() => setOpen(!open)}>
           <span /><span />
         </button>
@@ -60,14 +60,14 @@ export default function Navigation() {
       <AnimatePresence>
         {open && (
           <motion.nav ref={menuRef} id="site-menu" className="menu" role="dialog" aria-modal="true" aria-label="Site menu"
-            initial={{ clipPath: 'circle(0% at calc(100% - 2.2rem) 2.2rem)' }}
-            animate={{ clipPath: 'circle(150% at calc(100% - 2.2rem) 2.2rem)' }}
-            exit={{ clipPath: 'circle(0% at calc(100% - 2.2rem) 2.2rem)' }}
-            transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}>
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 4 }}
+            transition={{ duration: env.reduce ? 0 : 0.24, ease: [0.22, 1, 0.36, 1] }}>
             <ul>
               {routes.map((page, i) => (
-                <motion.li key={page.path} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 + i * 0.06, duration: 0.5 }}>
+                <motion.li key={page.path} initial={{ y: env.reduce ? 0 : 10, opacity: env.reduce ? 1 : 0 }} animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: env.reduce ? 0 : 0.035 + i * 0.025, duration: env.reduce ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] }}>
                   <Link to={page.path} onClick={closeMenu} aria-current={route === page.path ? 'page' : undefined}>{page.label}</Link>
                 </motion.li>
               ))}

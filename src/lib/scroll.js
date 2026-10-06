@@ -21,12 +21,15 @@ export function initScroll() {
 }
 export const scrollTo = (sel) => {
   const el = document.querySelector(sel); if (!el) return
-  if (lenis) lenis.scrollTo(el, { duration: 1.5, easing: (t) => 1 - Math.pow(1 - t, 4) })
+  if (lenis) lenis.scrollTo(el, { duration: 0.85, easing: (t) => 1 - Math.pow(1 - t, 4) })
   else el.scrollIntoView({ behavior: env.reduce ? 'auto' : 'smooth' })
 }
+export const scrollToPosition = (top = 0) => {
+  if (lenis) lenis.scrollTo(top, { immediate: true })
+  else window.scrollTo({ top, behavior: 'auto' })
+}
 export const scrollToTop = () => {
-  if (lenis) lenis.scrollTo(0, { immediate: true })
-  else window.scrollTo({ top: 0, behavior: 'auto' })
+  scrollToPosition(0)
 }
 export const lockScroll = (on) => {
   if (lenis) on ? lenis.stop() : lenis.start()
@@ -39,12 +42,12 @@ export function useReveal(ref) {
     const ctx = gsap.context(() => {
       gsap.utils.toArray('[data-lines]').forEach((el) =>
         gsap.from(el.querySelectorAll('.line > span'), {
-          yPercent: 112, duration: env.small ? 0.9 : 1.3, ease: 'expo.out', stagger: 0.09,
+          yPercent: 108, duration: env.small ? 0.72 : 0.92, ease: 'expo.out', stagger: 0.07,
           scrollTrigger: { trigger: el, start: 'top 85%', once: true },
         }))
       gsap.utils.toArray('[data-fade]').forEach((el) =>
-        gsap.from(el, { y: 30, opacity: 0, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 90%', once: true } }))
+        gsap.from(el, { y: 16, opacity: 0, duration: env.small ? 0.62 : 0.78, ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true } }))
     }, ref)
     return () => ctx.revert()
   }, [])

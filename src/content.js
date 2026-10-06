@@ -43,7 +43,18 @@ export const content = {
     { title: 'Seva Mahotsav', kind: 'Service highlight', detail: 'Recognised for the club’s contribution to bringing Seva Mahotsav together.', image: '/images/daanveer-citation.webp' },
   ],
   events: [],
-  contact: { email: '', instagram: '', linkedin: '', join: '' },
+  contact: {
+    email: '',
+    join: '',
+    socials: [
+      { label: 'Instagram', icon: 'instagram', url: 'https://www.instagram.com/rcgsc/' },
+      { label: 'LinkedIn', icon: 'linkedin', url: '' },
+      { label: 'Facebook', icon: 'facebook', url: 'https://www.facebook.com/rcgsc.3141/' },
+      { label: 'YouTube', icon: 'youtube', url: 'https://www.youtube.com/@RcgscOfficial' },
+      { label: 'X / Twitter', icon: 'x', url: 'https://x.com/rcgsc3141' },
+      { label: 'WhatsApp community', icon: 'whatsapp', url: '' },
+    ],
+  },
 }
 
 export const galleryCategories = [

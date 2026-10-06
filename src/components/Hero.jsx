@@ -9,16 +9,16 @@ export default function Hero() {
     if (env.reduce) return
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'expo.out' } })
-      tl.from('.hero__letter', { yPercent: 118, duration: env.small ? 1 : 1.6, stagger: 0.07 }, 0.25)
-        .from('.hero__fade', { y: 26, opacity: 0, duration: 1.1, stagger: 0.12 }, 0.8)
-        .fromTo('.hero__photo', { clipPath: 'inset(16% 14% 16% 14% round 48px)', scale: 1.2 },
-          { clipPath: 'inset(0% 0% 0% 0% round 0px)', scale: 1, duration: 2.2, ease: 'power3.out' }, 0)
-        .to('.hero__photo img', { scale: 1.08, duration: 18, ease: 'none' }, 0)
+      tl.from('.hero__letter', { yPercent: 108, duration: env.small ? 0.75 : 1.1, stagger: 0.045 }, 0.12)
+        .from('.hero__fade', { y: 16, opacity: 0, duration: 0.78, stagger: 0.08 }, 0.42)
+        .fromTo('.hero__photo', { clipPath: 'inset(8% 6% 8% 6% round 16px)', scale: 1.08 },
+          { clipPath: 'inset(0% 0% 0% 0% round 0px)', scale: 1, duration: 1.35, ease: 'power3.out' }, 0)
+        .to('.hero__photo img', { scale: 1.045, duration: 18, ease: 'none' }, 0)
       if (!env.small) {
         const st = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true }
-        gsap.to('.hero__photo img', { yPercent: 14, ease: 'none', scrollTrigger: st })
-        gsap.to('.hero__title', { yPercent: -22, ease: 'none', scrollTrigger: st })
-        gsap.to('.hero__sub', { yPercent: -10, opacity: 0.2, ease: 'none', scrollTrigger: st })
+        gsap.to('.hero__photo img', { yPercent: 9, ease: 'none', scrollTrigger: st })
+        gsap.to('.hero__title', { yPercent: -14, ease: 'none', scrollTrigger: st })
+        gsap.to('.hero__sub', { yPercent: -6, opacity: 0.35, ease: 'none', scrollTrigger: st })
       }
     }, root)
     return () => ctx.revert()
@@ -39,8 +39,8 @@ export default function Hero() {
           <p className="hero__club hero__fade">Rotaract Club of<br />Ghanshyamdas Saraf College</p>
           <p className="lede hero__fade">Service across community, club, profession and the world — led by students in {content.location}.</p>
           <div className="hero__cta hero__fade">
-            <Link className="btn" to="/join">Join us</Link>
-            <Link className="btn btn--ghost" to="/journey">The journey</Link>
+            <Link className="btn" to="/join"><span>Join us</span></Link>
+            <Link className="btn btn--ghost" to="/journey"><span>The journey</span></Link>
           </div>
         </div>
       </div>

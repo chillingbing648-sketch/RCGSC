@@ -25,13 +25,13 @@ function Lightbox({ i, setI, photos, openerRef }) {
   const g = photos[i]
   return (
     <motion.div className="lb" role="dialog" aria-modal="true" aria-label="Photo viewer"
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} onClick={() => setI(null)}>
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: env.reduce ? 0 : 0.22 }} onClick={() => setI(null)}>
       <div className="lb__top meta"><span>{String(i + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}</span><span>{g.caption}</span>
         <button ref={closeRef} onClick={() => setI(null)} aria-label="Close photo viewer">Close</button></div>
       <AnimatePresence mode="wait">
         <motion.img key={i} src={asset(g.src)} alt={g.caption} onClick={(e) => e.stopPropagation()}
           initial={{ opacity: 0, scale: 0.94, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 1.03 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }} />
+          transition={{ duration: env.reduce ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }} />
       </AnimatePresence>
       <div className="lb__nav" onClick={(e) => e.stopPropagation()}>
         <button onClick={() => setI((i - 1 + n) % n)} aria-label="Previous">←</button>

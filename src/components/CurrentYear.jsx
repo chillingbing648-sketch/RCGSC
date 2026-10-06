@@ -8,10 +8,10 @@ export default function CurrentYear() {
   useLayoutEffect(() => {
     if (env.reduce) return
     const ctx = gsap.context(() => {
-      gsap.fromTo('.year__photo', { clipPath: 'inset(100% 0% 0% 0%)' },
+      gsap.fromTo('.year__photo', { clipPath: 'inset(88% 0% 0% 0%)' },
         { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', scrollTrigger: { trigger: '.year__photo', start: 'top 92%', end: 'top 35%', scrub: true } })
-      gsap.fromTo('.year__photo img', { scale: 1.35 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '.year__photo', start: 'top 92%', end: 'bottom 20%', scrub: true } })
-      if (!env.small) gsap.fromTo('.year__num', { xPercent: 6 }, { xPercent: -6, ease: 'none', scrollTrigger: { trigger: r.current, start: 'top bottom', end: 'bottom top', scrub: true } })
+      gsap.fromTo('.year__photo img', { scale: 1.16 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '.year__photo', start: 'top 92%', end: 'bottom 20%', scrub: true } })
+      if (!env.small) gsap.fromTo('.year__num', { xPercent: 3 }, { xPercent: -3, ease: 'none', scrollTrigger: { trigger: r.current, start: 'top bottom', end: 'bottom top', scrub: true } })
     }, r)
     return () => ctx.revert()
   }, [])

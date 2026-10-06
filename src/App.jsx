@@ -13,7 +13,7 @@ import Gallery from './components/Gallery'
 import Join from './components/Join'
 import HomeLinks from './components/HomeLinks'
 import Footer from './components/Footer'
-import { initScroll, ScrollTrigger, scrollToTop, env } from './lib/scroll'
+import { initScroll, ScrollTrigger, scrollToPosition, env } from './lib/scroll'
 import { SiteRouter, Link, useRouter } from './lib/router'
 import { pageForPath } from './routes'
 
@@ -33,13 +33,13 @@ function PageContent({ route }) {
     <section className="section not-found" aria-labelledby="not-found-title">
       <p className="meta">404 · Page not found</p>
       <h1 className="display-xl" id="not-found-title">This page has wandered beyond the galaxy.</h1>
-      <Link className="btn" to="/">Return home</Link>
+      <Link className="btn" to="/"><span>Return home</span></Link>
     </section>
   )
 }
 
 function SiteFrame() {
-  const { route } = useRouter()
+  const { route, navigation } = useRouter()
   const previousRoute = useRef(route)
   useEffect(() => {
     const stop = initScroll()
@@ -61,17 +61,18 @@ function SiteFrame() {
       document.head.appendChild(description)
     }
     description.content = meta?.description || 'The requested page could not be found.'
-    scrollToTop()
+    if (navigation.type === 'push') scrollToPosition(0)
     const timer = window.setTimeout(() => {
+      if (navigation.type === 'pop') scrollToPosition(navigation.scrollY)
       ScrollTrigger.refresh()
       if (shouldFocusHeading) {
         const heading = document.querySelector('.page-route h1, .page-route h2')
         heading?.setAttribute('tabindex', '-1')
         heading?.focus({ preventScroll: true })
       }
-    }, 500)
+    }, navigation.type === 'initial' || env.reduce ? 0 : 280)
     return () => window.clearTimeout(timer)
-  }, [route])
+  }, [route, navigation])
 
   return (
     <>
@@ -80,8 +81,8 @@ function SiteFrame() {
       <main id="main">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div key={route} className="page-route"
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: env.reduce ? 0 : .45, ease: [.22, 1, .36, 1] }}>
+            initial={{ opacity: 0, y: env.reduce ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: env.reduce ? 0 : -4 }}
+            transition={{ duration: env.reduce ? 0 : .24, ease: [.22, 1, .36, 1] }}>
             <PageContent route={route} />
           </motion.div>
         </AnimatePresence>

@@ -21,7 +21,7 @@ export default function Join() {
           {['SERVICE', 'ABOVE', 'SELF'].map((w) => <span className="line" key={w} aria-hidden="true"><span>{w}</span></span>)}
         </h1>
         <p className="join__tag" data-fade>Lead. Serve. Create impact.</p>
-        <a className="btn btn--lg" data-fade href={href} onClick={(e) => { if (href.startsWith('#')) { e.preventDefault(); scrollTo(href) } }}>Become a Rotaractor</a>
+        <a className="btn btn--lg" data-fade href={href} onClick={(e) => { if (href.startsWith('#')) { e.preventDefault(); scrollTo(href) } }}><span>Become a Rotaractor</span></a>
       </div>
     </section>
   )

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { pageForPath } from '../routes'
 
 const RouterContext = createContext(null)
@@ -19,18 +19,35 @@ export function hrefForRoute(path) {
 
 export function SiteRouter({ children }) {
   const [route, setRoute] = useState(readRoute)
+  const [navigation, setNavigation] = useState({ type: 'initial', scrollY: 0, revision: 0 })
+  const revision = useRef(0)
   useEffect(() => {
-    const onPopState = () => setRoute(readRoute())
+    const previousScrollRestoration = window.history.scrollRestoration
+    window.history.scrollRestoration = 'manual'
+    const currentState = window.history.state && typeof window.history.state === 'object' ? window.history.state : {}
+    window.history.replaceState({ ...currentState, route: readRoute(), scrollY: window.scrollY }, '', window.location.href)
+    const onPopState = (event) => {
+      setRoute(readRoute())
+      revision.current += 1
+      setNavigation({ type: 'pop', scrollY: Math.max(0, Number(event.state?.scrollY) || 0), revision: revision.current })
+    }
     window.addEventListener('popstate', onPopState)
-    return () => window.removeEventListener('popstate', onPopState)
+    return () => {
+      window.removeEventListener('popstate', onPopState)
+      window.history.scrollRestoration = previousScrollRestoration
+    }
   }, [])
 
   const navigate = useCallback((path) => {
     const destination = pageForPath(path) ? path : '/404'
-    window.history.pushState({}, '', destination === '/404' ? `${base}404.html` : hrefForRoute(destination))
+    const currentState = window.history.state && typeof window.history.state === 'object' ? window.history.state : {}
+    window.history.replaceState({ ...currentState, route: readRoute(), scrollY: window.scrollY }, '', window.location.href)
+    window.history.pushState({ route: destination, scrollY: 0 }, '', destination === '/404' ? `${base}404.html` : hrefForRoute(destination))
     setRoute(destination)
+    revision.current += 1
+    setNavigation({ type: 'push', scrollY: 0, revision: revision.current })
   }, [])
-  const value = useMemo(() => ({ route, navigate }), [route, navigate])
+  const value = useMemo(() => ({ route, navigate, navigation }), [route, navigate, navigation])
   return <RouterContext.Provider value={value}>{children}</RouterContext.Provider>
 }
 
