@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Lines from './Lines'
-import { gsap, env, useReveal, lockScroll } from '../lib/scroll'
+import { env, useReveal, lockScroll } from '../lib/scroll'
 import { gallery, galleryCategories, asset } from '../content'
 
 function Lightbox({ i, setI, photos, openerRef }) {
@@ -42,20 +42,11 @@ function Lightbox({ i, setI, photos, openerRef }) {
 }
 
 export default function Gallery() {
-  const r = useRef(); const cur = useRef(); const openerRef = useRef(); useReveal(r)
+  const r = useRef(); const openerRef = useRef(); useReveal(r)
   const [open, setOpen] = useState(null)
   const [category, setCategory] = useState('all')
   const categories = galleryCategories.filter((item) => gallery.some((photo) => photo.category === item.id))
   const photos = category === 'all' ? gallery : gallery.filter((item) => item.category === category)
-
-  useEffect(() => {
-    if (!env.fine || env.reduce) return
-    const x = gsap.quickTo(cur.current, 'x', { duration: 0.35, ease: 'power3' })
-    const y = gsap.quickTo(cur.current, 'y', { duration: 0.35, ease: 'power3' })
-    const m = (e) => { x(e.clientX); y(e.clientY) }
-    window.addEventListener('pointermove', m, { passive: true })
-    return () => window.removeEventListener('pointermove', m)
-  }, [])
 
   const tileMove = (e) => {
     if (!env.fine) return
@@ -64,8 +55,6 @@ export default function Gallery() {
     e.currentTarget.style.setProperty('--py', ((e.clientY - b.top) / b.height - 0.5).toFixed(3))
   }
   const tileLeave = (e) => { e.currentTarget.style.setProperty('--px', 0); e.currentTarget.style.setProperty('--py', 0) }
-  const cursor = (on) => () => cur.current?.classList.toggle('is-on', on)
-
   return (
     <section className="section gallery" id="gallery" ref={r}>
       <p className="meta" data-fade>Gallery</p>
@@ -76,7 +65,7 @@ export default function Gallery() {
             aria-pressed={category === item.id} onClick={() => setCategory(item.id)}>{item.label}</button>
         ))}
       </div>
-      <div className="gal" onPointerEnter={cursor(true)} onPointerLeave={cursor(false)}>
+      <div className="gal">
         {photos.map((g, i) => (
           <button key={g.src} className={'tile tile--' + g.size} onClick={(e) => { openerRef.current = e.currentTarget; setOpen(i) }} onPointerMove={tileMove} onPointerLeave={tileLeave}
             aria-label={`View ${g.caption}`} data-fade>
@@ -85,7 +74,6 @@ export default function Gallery() {
           </button>
         ))}
       </div>
-      <div className="cursor" ref={cur} aria-hidden="true"><span>View</span></div>
       <AnimatePresence>{open !== null && <Lightbox i={open} setI={setOpen} photos={photos} openerRef={openerRef} />}</AnimatePresence>
     </section>
   )

@@ -13,6 +13,7 @@ import Gallery from './components/Gallery'
 import Join from './components/Join'
 import HomeLinks from './components/HomeLinks'
 import Footer from './components/Footer'
+import Cursor from './components/Cursor'
 import { initScroll, ScrollTrigger, scrollToPosition, env } from './lib/scroll'
 import { SiteRouter, Link, useRouter } from './lib/router'
 import { pageForPath } from './routes'
@@ -88,6 +89,7 @@ function SiteFrame() {
         </AnimatePresence>
       </main>
       <Footer />
+      <Cursor />
     </>
   )
 }

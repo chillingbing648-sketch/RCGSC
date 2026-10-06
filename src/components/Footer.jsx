@@ -29,6 +29,10 @@ export default function Footer() {
         y: 10, opacity: 0, duration: .42, stagger: .045, ease: 'power2.out', clearProps: 'transform,opacity',
         scrollTrigger: { trigger: '.foot__explore', start: 'top 88%', once: true },
       })
+      gsap.from('.foot__masthead', {
+        y: 22, opacity: 0, duration: .82, ease: 'power2.out', clearProps: 'transform,opacity',
+        scrollTrigger: { trigger: '.foot__masthead', start: 'top 92%', once: true },
+      })
     }, r)
     return () => ctx.revert()
   }, [])
